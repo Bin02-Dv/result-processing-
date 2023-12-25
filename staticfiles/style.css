@@ -1,0 +1,389 @@
+*{
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.my-body{
+    background: url("../static/img/srms-bg2.jpg");
+    height: 100vh;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.main-body{
+    backdrop-filter: blur(3px);
+    height: 100vh;
+    background-color: rgb(192, 192, 192, .5);
+}
+header{
+    padding: 20px;
+}
+header ul img{
+    width: 100px;
+}
+header ul{
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+}
+header ul li{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+header ul li{
+    font-weight: 800;
+    font-size: 20px;
+    text-shadow: 0 10px 5px rgba(0,0,0, .3)
+}
+header .none{
+    display: none;
+}
+.up-header{
+    background: linear-gradient(rgb(216, 216, 216), rgba(249, 249, 249, 0.484), rgba(255, 255, 255, 0.198));
+    box-shadow: 0 .5rem 1rem rgba(0,0,0, .2);
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+}
+.container-fluid{
+    display: flex;
+}
+.nav-section{
+    background: linear-gradient(red, rgba(255, 0, 0, 0.518), rgba(255, 0, 0, 0.227));
+    height: 80vh;
+    border: 2px solid #fff;
+    width: 30%;
+    transition: all 1s;
+}
+.nav-section ul li a{
+    color: #fff;
+    text-decoration: none;
+    transition: all 2s;
+}
+
+.nav-section ul li{
+    padding: 20px;
+    list-style: none;
+    border: 1px solid #fff;
+    margin-bottom: 10px;
+    transition: all 1s;
+    border-radius: 8px;
+}
+
+.nav-section ul{
+    padding: 20px;
+}
+
+.desk ul li a:hover{
+    color: #000;
+}
+
+.desk ul li:hover{
+    background-color: #fff;
+}
+.desk ul .ma a:hover{
+    color: #fff;
+}
+
+.desk ul .ma:hover{
+    background-color: red;
+}
+
+.end-content a{
+    color: red;
+    text-decoration: none;
+    transition: all 1s;
+    padding: 10px;
+}
+
+.end-content a:hover{
+    background-color: red;
+    color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.nav-section .active{
+    background-color: #fff;
+}
+
+.nav-section .active a{
+    color: #000;
+}
+
+.res{
+    width: 120px;
+    display: none;
+    transition: all 1s;
+}
+
+.res a{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.res ul li{
+    height: 20px;
+    width: 20px;
+    border: none;
+}
+.res ul li .fa{
+    font-size: 20px;
+}
+
+.main-section{
+    background: linear-gradient(rgb(216, 216, 216), rgba(249, 249, 249, 0.484), rgba(255, 255, 255, 0.198));
+    height: 50vh;
+    width: 100%;
+}
+
+.cart-section{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: 50vh;
+    padding: 10px;
+    gap: 10px;
+}
+
+.cart{
+    height: 10vh;
+    background: linear-gradient(red, rgba(255, 0, 0, 0.518), rgba(255, 0, 0, 0.227));
+    width: 400px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    transition: all 1s;
+    box-shadow: 0 .5rem 1rem rgba(0,0,0, .2);
+}
+
+.cart .fa{
+    font-size: 40px;
+    transition: all 1s;
+}
+
+.cart .text{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.cart .text span{
+    font-style: italic;
+}
+
+.cart .text span:first-child{
+    font-size: 25px;
+}
+
+.icons{
+    position: absolute;
+    right: 50px;
+    bottom: 50px;
+    line-height: 30px;
+}
+
+.icons .fa{
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 50%;
+    font-size: 20px;
+    color: red;
+    transition: all 1s;
+}
+
+.icons .fa:hover{
+    background-color: red;
+    color: rgb(219, 219, 219);
+}
+
+/* Add your custom styles here */
+
+.container {
+    margin: 20px;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+table, th, td {
+    border: 1px solid #ccc;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: red;
+    color: #fff;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.pagination span {
+    cursor: pointer;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    margin: 0 5px;
+}
+
+.pagination .active {
+    background-color: red;
+    color: #fff;
+}
+
+.container a .fa{
+    color: red;
+}
+
+
+/* Styles for the modal */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.7);
+    transition: all 1s;
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 2px auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 100%;
+    max-width: 800px;
+    position: relative;
+    transition: all 1s;
+}
+
+.close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.modal-content{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+}
+
+.modal-content h2{
+    margin-bottom: 20px;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    letter-spacing: 2px;
+    color: red;
+}
+
+.row{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.modal-content .row input, select, textarea{
+    width: 100%;
+    font-size: 20px;
+    padding: 10px;
+    outline: none;
+    border: 1px solid silver;
+    border-radius: 5px;
+}
+
+.modal-content button{
+    background: #ccc;
+    border: none;
+    font-size: 20px;
+    padding: 10px;
+    margin-top: 20px;
+    width: 100%;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 1s;
+}
+
+.modal-content button:hover{
+    background-color: red;
+    color: #ccc;
+}
+
+/* Responsive styling */
+@media screen and (max-width: 600px) {
+    .modal-content {
+        width: 90%;
+    }
+}
+
+
+
+@media screen and (max-width:971px) {
+    .desk{
+        display: none;
+        transition: all 1s;
+    }
+    .res{
+        display: block;
+        transition: all 1s;
+    }
+
+    .up-header{
+        font-size: 20px;
+        transition: all 1s;
+    }
+}
+
+@media screen and (max-width:569px) {
+    .cart{
+        width: 200px;
+        transition: all 1s;
+    }
+}
+
+@media screen and (max-width:376px) {
+    .cart{
+        width: 160px;
+        transition: all 1s;
+    }
+}
+
+@media screen and (max-width: 481px) {
+    header .block{
+        display: none;
+    }
+    header .none{
+        display: block;
+    }
+}

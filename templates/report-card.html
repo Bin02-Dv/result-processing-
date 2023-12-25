@@ -1,0 +1,173 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Result Report Card for {{result.student_name}}</title>
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://fontawesome.com/icons/lips?f=classic&s=solid">
+    <link rel="shortcut icon" href="{% static 'img/logo.png' %}" type="image/x-icon">
+    <style>
+        /* Customize the styling here */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+        .report-card {
+            border: 2px solid #0056b3;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 800px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        .school-logo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .school-logo img {
+            max-width: 100px;
+        }
+        .student-info {
+            /* text-align: center; */
+            margin-bottom: 20px;
+        }
+        .student-info h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        h2 span{
+            font-weight: 100;
+        }
+        .student-info p {
+            margin: 5px 0;
+            border-bottom: 2px solid rgb(182, 182, 182);
+        }
+        .subject {
+            margin-top: 20px;
+        }
+        .subject h4 {
+            font-weight: bold;
+        }
+        .subject table {
+            width: 100%;
+            margin-top: 10px;
+        }
+        .subject table th,
+        .subject table td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        .subject table th {
+            background-color: #f2f2f2;
+        }
+        .total-score {
+            margin-top: 20px;
+            text-align: right;
+        }
+        .total-score h4 {
+            font-weight: bold;
+        }
+        .school-name {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: #0056b3;
+            margin-top: 20px;
+        }
+        a{
+            text-decoration: none;
+            color: red;
+        }
+        .container{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="report-card">
+            <a href="/decleared"><i class="fa fa-arrow-left"></i> Back</a>
+            <div class="school-logo">
+                <img src="{% static 'img/logo.png' %}" alt="ABC High School Logo">
+            </div>
+            <div class="student-info">
+                <h2><strong>Result Report Card</strong></h2>
+                <h2>
+                   <strong>HEAD OFFICE:</strong> <span>Tudun Kasira, G.R.A, Katsina, Katsina State</span><br>
+                    <strong>BRANCHES:</strong> <span>Dandagoro, Batagarawa, Kwado</span>
+                </h2><br><br>
+                <p><strong>Student:</strong> {{report.stu_id.l_name}} {{report.stu_id.f_name}} {{report.stu_id.m_name}}</p>
+                <p><strong>Class:</strong> {{report.stu_id.class_name}}</p>
+                <p><strong>Term:</strong> {{report.stu_id.term}}</p>
+                <p><strong>Year:</strong> {{report.year}}</p>
+                <p><strong>Admission No:</strong> {{report.stu_id}}</p>
+                <p><strong>Date Decleared:</strong> {{report.date_registered}}</p>
+            </div><br>
+            <div class="subject">
+                <h4>COGNITIVE PERFORMANCE</h4>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>SUBJECTS:</th>
+                            <th>1st C.A</th>
+                            <th>2nd C.A</th>
+                            <th>3rd C.A</th>
+                            <th>Exam</th>
+                            <th>Total Score</th>
+                            <th>Grades</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for result in results %}
+                        <tr>
+                            <td>{{result.subj_name}}</td>
+                            <td>{{result.first_ca}}</td>
+                            <td>{{result.second_ca}}</td>
+                            <td>{{result.third_ca}}</td>
+                            <td>{{result.exam}}</td>
+                            <td>{{result.total_marks}}</td>
+                            <td>{{result.grade}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div><br><br>
+            <div class="student-info">
+                <p><strong>Overall Total:</strong> {{report.overAll_marks}}</p><br>
+                <p><strong>No. of Pupils:</strong> {{total_stu}}</p><br>
+                <p><strong>Position:</strong> {{report.position}}</p><br>
+                <p><strong>Examiner's Comment:</strong> {{report.examiner_comment}}</p><br>
+                <p><strong>Examiner's Signature:</strong><br> <img src="{{report.examiner_sign.url}}" alt="" width="200px"></p>
+            </div>
+            <div class="total-score">
+                <h4>Total Score: {{report.overAll_marks}}/200</h4>
+            </div>
+            <div class="school-name">
+                ABC High School - www.abchighschool.com
+            </div>
+            <div class="print">
+                <button class="btn btn-primary" onclick="printInfo()"><i class="fa fa-print"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function printInfo(){
+            document.querySelector("button").style.display = "none";
+            document.querySelector("a").style.display = "none";
+            print();
+            document.querySelector("button").style.display = "block";
+            document.querySelector("a").style.display = "block";
+        }
+    </script>
+</body>
+</html>

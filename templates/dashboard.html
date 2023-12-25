@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <!-- Font Awesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://fontawesome.com/icons/lips?f=classic&s=solid">
+    <!-- <link rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css"> -->
+    <!-- my css -->
+    <link rel="stylesheet" href="../static/style.css">
+    <link rel="shortcut icon" href="../static/img/logo.png" type="image/x-icon">
+    <style>
+        .icons{
+            position: absolute;
+            right: 50px;
+            bottom: 0;
+            line-height: 30px;
+        }
+        @media screen and (max-width: 375px) {
+            .res{
+                height: 150vh;
+            }
+            .icons{
+                position: absolute;
+                right: 50px;
+                bottom: -100px;
+                line-height: 30px;
+            }
+            .up-header{
+                font-size: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="up-header">
+        <div class="brand"><h2><i class="fa fa-graduation-cap"></i> SRMS | <i class="fa fa-user-tie"></i> User {{current_user.role}}</h2></div>
+        <div class="end-content"><a href="/logout"><i class="fa fa-power-off"></i> Logout</a></div>
+    </div>
+    <div class="container-fluid">
+        <nav class="nav-section desk">
+            <ul>
+                <li class="active"><a href="/dashboard"><i class="fa fa-gauge"></i> Dashboard</a></li>
+                {% if current_user.role == 'examiner' or current_user.role == 'admin' %}
+                <li><a href="/student_class"><i class="fa fa-list"></i> Classes</a></li>
+                <li><a href="/staff"><i class="fa fa-user-circle"></i> Staff</a></li>
+                <li><a href="/subject"><i class="fa fa-file"></i> Subjects</a></li>
+                <li><a href="/student"><i class="fa fa-users"></i> Students</a></li>
+                {% endif %}
+                <li><a href="/result"><i class="fa-solid fa-square-poll-vertical"></i> Result</a></li>
+                <li class="ma"><a href="/manage-acc"><i class="fa fa-gear"></i> Manage Account</a></li>
+            </ul>
+        </nav>
+        <nav class="nav-section res">
+            <ul>
+                <li><a href="/dashboard"><i class="fa fa-gauge"></i> <span>Dashboard</span></a></li>
+                {% if current_user.role == 'examiner' or current_user.role == 'admin' %}
+                <li><a href="/student_class"><i class="fa fa-list"></i> <span>Classes</span></a></li>
+                <li><a href="/staff"><i class="fa fa-user-circle"></i> <span>Staff</span></a></li>
+                <li><a href="/subject"><i class="fa fa-file"></i> <span>Subjects</span></a></li>
+                <li><a href="/student"><i class="fa fa-users"></i> <span>Students</span></a></li>
+                {% endif %}
+                <li><a href="/result"><i class="fa-solid fa-square-poll-vertical"></i> <span>Result</span></a></li>
+                <li class="ma"><a href="/manage-acc"><i class="fa fa-gear"></i> <span>Manage Account</span></a></li>
+            </ul>
+        </nav>
+        <main class="main-section">
+            <div class="cart-section">
+                <div class="cart">
+                    <div class="icon">
+                        <i class="fa fa-users"></i>
+                    </div>
+                    <div class="text">
+                        <span>{{student}}</span>
+                        <span>Registered Students</span>
+                    </div>
+                </div>
+                <div class="cart">
+                    <div class="icon">
+                        <i class="fa fa-list"></i>
+                    </div>
+                    <div class="text">
+                        <span>{{subject}}</span>
+                        <span>Subject Listed</span>
+                    </div>
+                </div>
+                <div class="cart">
+                    <div class="icon">
+                        <i class="fa fa-landmark"></i>
+                    </div>
+                    <div class="text">
+                        <span>{{class}}</span>
+                        <span>Total Classes</span>
+                    </div>
+                </div>
+                <div class="cart">
+                    <div class="icon">
+                        <i class="fa fa-file-pen"></i>
+                    </div>
+                    <div class="text">
+                        <span>{{result}}</span>
+                        <span>Results Compeleted</span>
+                    </div>
+                </div>
+            </div>
+            <div class="icons">
+                <!-- <a href="#" id="openModalBtn2">
+                    <i class="fa fa-search"></i>
+                </a> <br>
+                <a href="#" id="openModalBtn3">
+                    <i class="fa fa-microphone"></i>
+                </a><br> -->
+                <span>Powered By - <i><b>BIN AHMAD ALAMIN</b></i></span>
+            </div>
+        </main>
+    </div>
+
+    <!-- Search Modal -->
+    <div id="search" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="close" id="closeModalBtn2">&times;</span>
+            <h2>Search</h2>
+            <p><i>Search any data by selecting the category.</i></p>
+            <form id="myForm2">
+                <div class="row">
+                    <select name="search" id="search" required>
+                        <option value="">Select Category</option>
+                    </select>
+                </div>
+                <div class="row">
+                    <input type="text" id="search" name="search" placeholder="Item to be search.." required>
+                </div>
+                <button type="submit"><i class="fa fa-search"></i></button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Search Modal -->
+    <div id="voice" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="close" id="closeModalBtn3">&times;</span>
+            <h2>Voice Search</h2>
+            <p><i style="color: red;">The feature is not yet available..!!!</i></p>
+            <p><i style="text-align: center; color: silver;" class="fas fa-microphone"></i></p>
+        </div>
+    </div>
+<script>
+    var search_modal = document.getElementById("search");
+    var openModalBtn2 = document.getElementById("openModalBtn2");
+    var closeModalBtn2 = document.getElementById("closeModalBtn2");
+    var form2 = document.getElementById("myForm2");
+
+    // Open the modal
+    openModalBtn2.addEventListener("click", function () {
+        search_modal.style.display = "block";
+    });
+
+    // Close the modal
+    closeModalBtn2.addEventListener("click", function () {
+        search_modal.style.display = "none";
+    });
+
+    // Close the modal when clicking outside the modal content
+    window.addEventListener("click", function (event) {
+        if (event.target == search_modal) {
+            search_modal.style.display = "none";
+        }
+    });
+    // ------------------------------------------------------------
+    var voice_modal = document.getElementById("voice");
+    var openModalBtn3 = document.getElementById("openModalBtn3");
+    var closeModalBtn3 = document.getElementById("closeModalBtn3");
+
+    // Open the modal
+    openModalBtn3.addEventListener("click", function () {
+        voice_modal.style.display = "block";
+    });
+
+    // Close the modal
+    closeModalBtn3.addEventListener("click", function () {
+        voice_modal.style.display = "none";
+    });
+
+    // Close the modal when clicking outside the modal content
+    window.addEventListener("click", function (event) {
+        if (event.target == voice_modal) {
+            voice_modal.style.display = "none";
+        }
+    });
+</script>
+</body>
+</html>

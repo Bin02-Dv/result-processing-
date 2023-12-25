@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Resullt Processing Management System</title>
+    <link rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../static/style.css">
+    <link rel="shortcut icon" href="../static/img/logo.png" type="image/x-icon">
+    <style>
+        .footer{
+            position: absolute;
+            bottom: 50px;
+            left: 50px;
+        }
+        .login-section{
+            margin-top: 50px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .login-section a{
+            text-decoration: none;
+            background-color: red;
+            color: #fff;
+            padding: 10px;
+            font-size: 20px;
+            border-radius: 5px;
+            transition: all 1s;
+        }
+        .login-section a:hover{
+            box-shadow: 0 .5rem 1rem rgba(0,0,0, .4);
+            position: relative;
+            padding: 20px;
+            background-color: silver;
+            color: red;
+        }
+        p{
+            width: 70%;
+            font-style: italic;
+            font-weight: 800;
+        }
+        @media screen and (max-width: 375px) {
+            .footer{
+                position: absolute;
+                right: 50px;
+                bottom: 50px;
+                line-height: 30px;
+            }
+            .my-body{
+                background: url("../static/img/srms-bg2.jpg");
+                height: 150vh;
+                background-position: center;
+                background-size: cover;
+                background-repeat: no-repeat;
+            }
+            .main-body{
+                backdrop-filter: blur(3px);
+                height: 150vh;
+                background-color: rgb(192, 192, 192, .5);
+            }
+        }
+    </style>
+</head>
+<body class="my-body">
+    <div class="main-body">
+        <header>
+            <ul>
+                <li><img src="../static/img/logo.png" alt=""></li>
+                <li class="block">School Result Processing Management System</li>
+                <li class="none">SRPMS</li>
+            </ul>
+        </header>
+        <hr>
+        <div class="login-section">
+            <h2>MOTO</h2>
+            <p id="text-container">
+                <span id="animated-text"></span>
+            </p>
+            <a href="/login">Login to SRPMS</a>
+        </div>
+        <div class="footer">
+            <span>Powered By - <i><b>BIN AHMAD ALAMIN</b></i></span>
+        </div>
+    </div>
+    <script src="../static/scripts.js"></script>
+    <script>
+        // text animation section
+
+        const textContainer = document.getElementById('text-container');
+        const animatedText = document.getElementById('animated-text');
+
+        // Define the text you want to animate
+        const textToAnimate = "Empowering Academic Excellence: Navigating Tomorrow's Leaders Today. Our School Result Processing Management System is committed to shaping the future of education by efficiently and accurately handling student academic records. With our cutting-edge technology and user-friendly interface, we strive to streamline the process of managing and processing school results, enabling educators to focus on nurturing the leaders of tomorrow. Together, we pave the way for a brighter educational landscape, ensuring that every student's achievements are recognized and celebrated.";
+
+        // Define the animation delay in milliseconds (e.g., 100ms)
+        const animationDelay = 50;
+
+        let letterIndex = 0;
+
+        function animateText() {
+            if (letterIndex < textToAnimate.length) {
+                animatedText.innerHTML += textToAnimate.charAt(letterIndex);
+                letterIndex++;
+                setTimeout(animateText, animationDelay);
+            }
+        }
+
+        // Start the animation
+        animateText();
+    </script>
+</body>
+</html>

@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% if staff %}
+    <title>Full Details of - {{staff.f_name}} </title>
+    {% endif %}
+    {% if class %}
+    <title>Full Details of - {{class.class_name}} </title>
+    {% endif %}
+    {% if subject %}
+    <title>Full Details of - {{subject.subject_name}} </title>
+    {% endif %}
+    {% if student %}
+    <title>Full Details of - {{student.f_name}} </title>
+    {% endif %}
+    {% if result %}
+    <title>Assessment Details of - {{result.stu_id.l_name}} {{result.stu_id.f_name}} {{result.stu_id.m_name}} </title>
+    {% endif %}
+    <!-- Font Awesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://fontawesome.com/icons/lips?f=classic&s=solid">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.jqueryui.min.css">
+    <!-- my css -->
+    <link rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css">
+    <!-- my css -->
+    <link rel="stylesheet" href="../static/style.css">
+    <link rel="shortcut icon" href="../static/img/logo.png" type="image/x-icon">
+    <style>
+        .modal {
+            display: block; /* Hidden by default */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            transition: all 1s;
+        }
+        input[type=checkbox]{
+            accent-color: red;
+        }
+        img{
+            border-radius: 50%;
+            height: 200px;
+            width: 200px;
+        }
+        form .row input{
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    {% if staff %}
+        <main class="main-section">
+            <div id="myModal" class="">
+                <div class="modal-content">
+                    <a href="/staff" class="close" id="closeModalBtn">&times;</a>
+                    <h2><i class="fa fa-info-circle"></i> Full info for - {{staff.f_name}} {{staff.m_name}} {{staff.l_name}} </h2>
+                    <p><i>Staff Info</i></p>
+                    <img src="{{staff.staff_photo.url}}" alt="" height="100" weight="100">
+                    <form id="myForm">
+                        <div class="row">
+                            <span><b>Staff ID</b></span>
+                            <input type="text" id="staff-id" name="staff-id" placeholder="Staff ID" value="{{staff.staff_id}}" readonly>
+                        </div>
+                        <div class="row">
+                            <span><b>First Name</b></span>
+                            <input type="text" id="fname" name="fname" placeholder="First Name" value="{{staff.f_name}}" readonly>
+                        </div>
+                        <div class="row">
+                            <span><b>Middle Name</b></span>
+                            <input type="text" id="mname" name="mname" placeholder="Middle Name (Optional)" value="{{staff.m_name}}" readonly>
+                        </div>
+                        <div class="row">
+                            <span><b>Last Name</b></span>
+                            <input type="text" id="lname" name="lname" placeholder="Last Name" value="{{staff.l_name}}" readonly>
+                        </div>
+                        <div class="row">
+                            <span><b>Date of Birth</b></span>
+                            <input type="text" id="dob" name="dob" placeholder="Date of Birth" value="{{staff.dob}}" readonly>
+                        </div>
+                        <div class="row">
+                            <span><b>Phone Number</b></span>
+                            <input type="text" id="staff_phone" name="staff_phone" placeholder="Phone Number" value="{{staff.staff_phone}}" readonly>
+                        </div>
+                        <div class="row">
+                            <span><b>Email</b></span>
+                            <input type="email" id="email" name="email" placeholder="Email" value="{{staff.user.email}}" readonly>
+                        </div>
+                        <div class="row">
+                            <span><b>Gender</b></span>
+                            <input type="text" name="" id="" value="{{staff.gender}}" readonly>
+                        </div>
+                        <div class="row">
+                            <span><b>Role</b></span>
+                            <input type="text" name="" id="" value="{{staff.role}}" readonly>
+                        </div>
+                        <div class="row">
+                            <span><b>Subject Taken</b></span>
+                            <textarea name="subjects" id="" cols="30" rows="5" placeholder="Staff Subjects" readonly>{{staff.subjects}}</textarea>
+                        </div>
+                        <div class="row">
+                            <span><b>Staff Address</b></span>
+                            <textarea name="address1" id="" cols="30" rows="5" placeholder="Contact Address" readonly>{{staff.staff_address}}</textarea>
+                        </div>
+                        <h2>Next of Kin</h2>
+                        <div class="row">
+                            <span><b>Full Name</b></span>
+                            <input type="text" id="full_name" name="full_name" placeholder="Full Name" value="{{staff.n_fullname}}" readonly>
+                        </div>
+                        <div class="row">
+                            <span><b>Phone Number</b></span>
+                            <input type="text" id="p_number" name="p_number" placeholder="Phone Number" value="{{staff.n_phone_number}}" readonly>
+                        </div>
+                        <div class="row">
+                            <span><b>Address</b></span>
+                            <textarea name="address2" id="" cols="30" rows="5" placeholder="Contact Address" readonly>{{staff.n_address}}</textarea>
+                        </div>
+                        <div class="row">
+                            <span><b>Email</b></span>
+                            <input type="email" id="email2" name="email2" placeholder="Email" value="{{staff.n_email}}" readonly>
+                        </div>
+                        <div class="row">
+                            <span><b>Date Registered</b></span>
+                            <input type="text" placeholder="Date Registered" value="{{staff.date_registered}}" readonly>
+                        </div>
+                        <div class="row">
+                            <span><b>Last Update Date</b></span>
+                            <input type="text" placeholder="Date Registered" value="{{staff.last_update}}" readonly>
+                        </div>
+                        <button type="button" onclick="printInfo()"><i class="fa fa-print"></i> Print</button>
+                    </form>
+                </div>
+            </div>
+        </main>
+        {% endif %}
+
+        {% if class %}
+        <!-- class details -->
+        <main class="main-section">
+            <div id="myModal" class="">
+                <div class="modal-content">
+                    <a href="/student_class" class="close" id="closeModalBtn">&times;</a>
+                    <h2><i class="fa fa-info-circle"></i> Full info for the class - {{class.class_name}} </h2>
+                    <p><i>Class Info</i></p>
+                    <form id="myForm">
+                        <div class="row">
+                            <span><b>Class Name</b></span>
+                            <input type="text" id="class_name" name="class_name" placeholder="Class Name" value="{{class.class_name}}" readonly>
+                        </div>
+                        <div class="row">
+                            <span><b>Class Subjects</b></span>
+                            <textarea name="subj" id="subj" cols="30" rows="5" placeholder="Subjects" readonly>{{class.subjects}}</textarea>
+                        </div>
+                        <div class="subject" style="width: 100%;">
+                            <h4><b>Students in the class</b></h4>
+                            <table id="myTable" class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Student ID</th>
+                                        <th>Stundet Name</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for student in students %}
+                                    <tr>
+                                        <td>{{student.stu_id}}</td>
+                                        <td>{{student.l_name}} {{student.f_name}} {{student.m_name}}</td>
+                                    </tr>
+                                    {% endfor %}
+                                    <tfoot>
+                                        <tr>
+                                            <th>Student ID</th>
+                                            <th>Stundet Name</th>
+                                        </tr>
+                                    </tfoot>
+                                </tbody>
+                            </table>
+                        </div><br><br>
+                        <div class="row">
+                            <span><b>The Current Term</b></span>
+                            <input type="text" value="{{class.term}}" readonly>
+                        </div>
+                        <div class="row">
+                            <span><b>Date Registered</b></span>
+                            <input type="text" placeholder="Date Registered" value="{{class.date_registered}}" readonly>
+                        </div>
+                        <div class="row">
+                            <span><b>Last Update Date</b></span>
+                            <input type="text" placeholder="Date Registered" value="{{class.last_update}}" readonly>
+                        </div>
+                        <button type="button" onclick="printInfo()"><i class="fa fa-print"></i> Print</button>
+                    </form>
+                </div>
+            </div>
+        </main>
+        {% endif %}
+
+        {% if subject %}
+        <!-- subject details -->
+        <main class="main-section">
+            <div id="myModal" class="">
+                <div class="modal-content">
+                    <a href="/subject" class="close" id="closeModalBtn">&times;</a>
+                    <h2><i class="fa fa-info-circle"></i> Full info for the subject - {{subject.subject_name}} </h2>
+                    <p><i>Subject Info</i></p>
+                    <form id="myForm">
+                        <div class="row">
+                            <span><b>Subject Name</b></span>
+                            <input type="text" id="subj_name" name="subj_name" placeholder="Subject Name" required value="{{subject.subject_name}}">
+                        </div>
+                        <div class="row">
+                            <span><b>Subject Description</b></span>
+                            <textarea name="subj_descript" id="subj_descript" cols="30" rows="5" placeholder="No description for the subject">{{ subject.description }}</textarea>
+                        </div>
+                        <div class="row">
+                            <span><b>Date Registered</b></span>
+                            <input type="text" placeholder="Date Registered" value="{{subject.date_registered}}" readonly>
+                        </div>
+                        <div class="row">
+                            <span><b>Last Update Date</b></span>
+                            <input type="text" placeholder="Date Registered" value="{{subject.last_update}}" readonly>
+                        </div>
+                        <button type="button" onclick="printInfo()"><i class="fa fa-print"></i> Print</button>
+                    </form>
+                </div>
+            </div>
+        </main>
+        {% endif %}
+
+
+        {% if student %}
+        <!-- student details -->
+        <main class="main-section">
+            <div id="myModal" class="">
+                <div class="modal-content">
+                    <a href="/student" class="close" id="closeModalBtn">&times;</a>
+                    <h2><i class="fa fa-info-circle"></i> Full info for the student - {{student.f_name}} </h2>
+                    <p><i>Student Info</i></p>
+                    <img src="{{student.student_photo.url}}" alt="" height="100" weight="100">
+                    <form id="student">
+                        {% csrf_token %}
+                        <div class="row">
+                            <span><b>First Name</b></span>
+                            <input type="text" id="fname" name="fname" placeholder="First Name" value="{{student.f_name}}" readonly>
+                        </div>
+                        <div class="row">
+                            <span><b>Middle Name</b></span>
+                            <input type="text" id="mname" name="mname" placeholder="Middle Name (Optional)" value="{{student.m_name}}" readonly>
+                        </div>
+                        <div class="row">
+                            <span><b>Last Name</b></span>
+                            <input type="text" id="lname" name="lname" placeholder="Last Name" value="{{student.l_name}}" readonly>
+                        </div>
+                        <div class="row">
+                            <span><b>Date of Birth</b></span>
+                            <input type="date" id="dob" name="dob" placeholder="Date of Birth" value="{{student.dob}}" readonly>
+                        </div>
+                        <div class="row">
+                            <span><b>Gender</b></span>
+                            <select name="gender" id="gender" readonly>
+                                <option value="{{student.gender}}">{{student.gender}}</option>
+                            </select>
+                        </div>
+                        <div class="row">
+                            <span><b>Address</b></span>
+                            <textarea name="stu_address" id="stu_address" readonly cols="30" rows="5" placeholder="Contact Address">{{student.stu_address}}</textarea>
+                        </div>
+                        <div class="row">
+                            <span><b>Class Name</b></span>
+                            <select name="student_class" id="student_class" readonly>
+                                <option value="{{student.class_name}}">{{student.class_name}}</option>
+                            </select>
+                        </div>
+                        <div class="row">
+                            <span><b>Current Term</b></span>
+                            <select name="term" id="term" readonly>
+                                <option value="{{student.term}}" class="after">{{student.term}}</option>
+                            </select>
+                        </div>
+                        <h2>Parent/Gaurdian</h2>
+                        <p><i>Update information for the Parent/Gaurdian.</i></p>
+                        <div class="row">
+                            <span><b>Full Name</b></span>
+                            <input type="text" id="full_name" name="full_name" readonly placeholder="Full Name" value="{{student.g_fullname}}">
+                        </div>
+                        <div class="row">
+                            <span><b>Phone Number</b></span>
+                            <input type="number" id="p_number" name="p_number" readonly placeholder="Phone Number" value="{{student.g_phone_number}}">
+                        </div>
+                        <div class="row">
+                            <span><b>Residential Address</b></span>
+                            <textarea name="g_address" id="g_address" cols="30" readonly rows="5" placeholder="Contact Address">{{student.g_address}}</textarea>
+                        </div>
+                        <div class="row">
+                            <span><b>Relationship</b></span>
+                            <select name="relationship" id="relationship">
+                                <option value="{{student.g_fullname}}">{{student.relationship}}</option>
+                            </select>
+                        </div>
+                        <div class="row">
+                            <span><b>Email Address</b></span>
+                            <input type="email" id="email" name="email" readonly placeholder="Email" value="{{student.email}}">
+                        </div>
+                        <button type="button" onclick="printInfo()"><i class="fa fa-print"></i> Print</button>
+                    </form>
+                </div>
+            </div>
+        </main>
+        {% endif %}
+
+        {% if result %}
+        <!-- result details -->
+        <main class="main-section">
+            <div id="myModal" class="">
+                <div class="modal-content">
+                    <a href="/result" class="close" id="closeModalBtn">&times;</a>
+                    <h2><i class="fa fa-info-circle"></i> Assessment info for the student - {{result.stu_id.l_name}} {{result.stu_id.f_name}} {{result.stu_id.m_name}} </h2>
+                    <p><i>Assessment Info</i></p>
+                    <form id="result">
+                        {% csrf_token %}
+                        <div class="row">
+                            <span><b>Class Name</b></span>
+                            <input value="{{result.class_name}}" readonly>
+                        </div>
+                        <div class="row">
+                            <span><b>Student Name</b></span>
+                            <input name="student_name" id="student_name" value="{{result.stu_id.l_name}} {{result.stu_id.f_name}} {{result.stu_id.m_name}}" placeholder="Student Name" readonly>
+                        </div>
+                        <div class="row">
+                            <span><b>Subject Name</b></span>
+                            <input  value="{{result.subj_name}}" readonly>
+                        </div>
+                        <div class="row">
+                            <span><b>Term</b></span>
+                            <input value="{{result.term}}" readonly>
+                        </div>
+                        <div class="row">
+                            <span><b>First C.A</b></span>
+                            <input value="{{result.first_ca}}" readonly><br>
+                            <span><b>Second C.A</b></span>
+                            <input value="{{result.second_ca}}" readonly><br>
+                            <span><b>Third C.A</b></span>
+                            <input value="{{result.third_ca}}" readonly><br>
+                            <span><b>Exam</b></span>
+                            <input value="{{result.exam}}" readonly>
+                        </div>
+                        <div class="row">
+                            <span><b>Total Marks</b></span>
+                            <input value="{{result.total_marks}}" readonly>
+                        </div>
+                        <div class="row">
+                            <span><b>Grade</b></span>
+                            <input value="{{result.grade}}" readonly>
+                        </div>
+                        <div class="row">
+                            <span><b>Created By</b></span>
+                            <input value="{{result.staff_fullname}}" readonly><br>
+                            <input value="{{result.staff_role}}" readonly><br>
+                            <input value="{{result.date_registered}}" readonly>
+                        </div>
+                        <div class="row">
+                            <span><b>Last Update</b></span>
+                            <input value="{{result.last_update}}" readonly>
+                        </div>
+                        <button type="button" onclick="printInfo()"><i class="fa fa-print"></i> Print</button>
+                    </form>
+                </div>
+            </div>
+        </main>
+        {% endif %}
+        <script src="../static/JQ.js"></script>
+        <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.13.6/js/dataTables.jqueryui.min.js"></script>
+
+    <script>
+        function printInfo(){
+            document.querySelector("button").style.display = "none";
+            document.querySelector("a").style.display = "none";
+            print();
+            document.querySelector("button").style.display = "block";
+            document.querySelector("a").style.display = "block";
+        }
+    </script>
+    <script>
+        $(document).ready(function () {
+            let table = new DataTable('#myTable', {
+                responsive: true,
+                pageLength: 3,
+            });
+
+        });
+    </script>
+</body>
+</html>

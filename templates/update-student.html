@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Student</title>
+    <!-- Font Awesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://fontawesome.com/icons/lips?f=classic&s=solid">
+    <link rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css">
+    <!-- my css -->
+    <link rel="stylesheet" href="../static/style.css">
+    <link rel="shortcut icon" href="../static/img/logo.png" type="image/x-icon">
+    <style>
+        .modal {
+            display: block; /* Hidden by default */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            transition: all 1s;
+        }
+        input[type=checkbox]{
+            accent-color: red;
+        }
+        img{
+            border-radius: 50%;
+            height: 200px;
+            width: 200px;
+        }
+        .subj{
+            border: 2px solid red;
+        }
+    </style>
+</head>
+<body>
+    <div class="up-header">
+        <div class="brand"><h2><i class="fa fa-graduation-cap"></i> SRMS | <i class="fa fa-user-tie"></i> User {{current_user.role}}</h2></div>
+        <div class="end-content"><a href="#"><i class="fa fa-power-off"></i> Logout</a></div>
+    </div>
+    <div class="container-fluid">
+        <nav class="nav-section desk">
+            <ul>
+                <li><a href="#"><i class="fa fa-gauge"></i> Dashboard</a></li>
+                <li><a href="#"><i class="fa fa-list"></i> Classes</a></li>
+                <li><a href="#"><i class="fa fa-user-circle"></i> Staff</a></li>
+                <li><a href="#"><i class="fa fa-file"></i> Subjects</a></li>
+                <li class="active"><a href="#"><i class="fa fa-users"></i> Students</a></li>
+                <li><a href="#"><i class="fa-solid fa-square-poll-vertical"></i> Result</a></li>
+                <li class="ma"><a href="#"><i class="fa fa-gear"></i> Manage Account</a></li>
+
+            </ul>
+        </nav>
+        <nav class="nav-section res">
+            <ul>
+                <li><a href="#"><i class="fa fa-gauge"></i> <span>Dashboard</span></a></li>
+                <li><a href="#"><i class="fa fa-list"></i> <span>Classes</span></a></li>
+                <li><a href="#"><i class="fa fa-user-circle"></i> <span>Staff</span></a></li>
+                <li><a href="#"><i class="fa fa-file"></i> <span>Subjects</span></a></li>
+                <li><a href="#"><i class="fa fa-users"></i> <span>Students</span></a></li>
+                <li><a href="#"><i class="fa-solid fa-square-poll-vertical"></i> <span>Result</span></a></li>
+                <li class="ma"><a href="#"><i class="fa fa-gear"></i> <span>Manage Account</span></a></li>
+            </ul>
+        </nav>
+        <main class="main-section">
+            <div id="myModal" class="modal">
+                <div class="modal-content">
+                    <a href="/student" class="close" id="closeModalBtn">&times;</a>
+                    <h2>Update Student</h2>
+                    <p><i>Update student.</i></p>
+                    {% for message in messages %}
+                    {% if message.tags == 'error'%}
+                    <div class="alert alert-danger">{{message}}</div>
+                    {% elif message.tags == 'success'%}
+                    <div class="alert alert-success">{{message}}</div>
+                    {% endif %}
+                    {% endfor %}
+                    <img src="{{student.student_photo.url}}" alt="" height="100" weight="100">
+                    <form id="student" method="post" action="/update-student/{{student.id}}" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="row">
+                            <span class="text-warning"><i>Update The Student Profile Image with the following format (JPG, PNG, JEPG)</i></span>
+                            <input type="file" id="profileimg" name="profileimg" placeholder="Profile Image">
+                        </div>
+                        <div class="row">
+                            <span><b>First Name</b></span>
+                            <input type="text" id="fname" name="fname" placeholder="First Name" value="{{student.f_name}}">
+                        </div>
+                        <div class="row">
+                            <span><b>Middle Name</b></span>
+                            <input type="text" id="mname" name="mname" placeholder="Middle Name (Optional)" value="{{student.m_name}}">
+                        </div>
+                        <div class="row">
+                            <span><b>Last Name</b></span>
+                            <input type="text" id="lname" name="lname" placeholder="Last Name" value="{{student.l_name}}">
+                        </div>
+                        <div class="row">
+                            <span><b>Date of Birth</b></span>
+                            <input type="date" id="dob" name="dob" placeholder="Date of Birth" value="{{student.dob}}">
+                        </div>
+                        <div class="row">
+                            <span><b>Student Gender</b></span>
+                            <select name="gender" id="gender">
+                                <option value="{{student.gender}}">{{student.gender}}</option>
+                                <option value="">---Select Gender---</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+                        </div>
+                        <div class="row">
+                            <span><b>Student Address</b></span>
+                            <textarea name="stu_address" id="stu_address" cols="30" rows="5" placeholder="Contact Address">{{student.stu_address}}</textarea>
+                        </div>
+                        <div class="row">
+                            <span><b>Student Class</b></span>
+                            <select name="student_class" id="student_class">
+                                <option value="{{student.class_name}}">{{student.class_name}}</option>
+                            </select>
+                        </div>
+                        <div class="row">
+                            <span><b>Current Term</b></span>
+                            <select name="term" id="term">
+                                <option value="{{student.term}}" class="after">{{student.term}}</option>
+                            </select>
+                        </div>
+                        <h2>Parent/Gaurdian</h2>
+                        <p><i>Update information for the Parent/Gaurdian.</i></p>
+                        <div class="row">
+                            <span><b>Full Name</b></span>
+                            <input type="text" id="full_name" name="full_name" placeholder="Full Name" value="{{student.g_fullname}}">
+                        </div>
+                        <div class="row">
+                            <span><b>Phone Number</b></span>
+                            <input type="number" id="p_number" name="p_number" placeholder="Phone Number" value="{{student.g_phone_number}}">
+                        </div>
+                        <div class="row">
+                            <span><b>Contact Address</b></span>
+                            <textarea name="g_address" id="g_address" cols="30" rows="5" placeholder="Contact Address">{{student.g_address}}</textarea>
+                        </div>
+                        <div class="row">
+                            <span><b>Relationship</b></span>
+                            <select name="relationship" id="relationship">
+                                <option value="{{student.g_fullname}}">{{student.relationship}}</option>
+                                <option value="">---Relationship---</option>
+                                <option value="Parent">Parent</option>
+                                <option value="Gaurdian">Gaurdian</option>
+                            </select>
+                        </div>
+                        <div class="row">
+                            <span><b>Contact Address</b></span>
+                            <input type="email" id="email" name="email" placeholder="Email" value="{{student.email}}">
+                        </div>
+                        <button type="submit"><i class="fa fa-refresh"></i> Update</button>
+                    </form>
+                </div>
+            </div>
+            <div class="icons">
+                <a href="#" id="openModalBtn2">
+                    <i class="fa fa-search"></i>
+                </a> <br>
+                <a href="#" id="openModalBtn3">
+                    <i class="fa fa-microphone"></i>
+                </a><br>
+                <span>Powered By - <i><b>BIN AHMAD ALAMIN</b></i></span>
+            </div>
+        </main>
+    </div>
+    <script src="../static/JQ.js"></script>
+    <script>
+        $(document).ready(function(){
+            $(".chck").click(function (){
+                var subj = "";
+                $(".chck:checked").each(function(){
+                    subj+=$(this).val()+',';
+                });
+                $("#subj").val(subj)
+            });
+        });
+
+        $(document).ready(function(){
+            $(".chck2").click(function (){
+                var teacher = "";
+                $(".chck2:checked").each(function(){
+                    teacher+=$(this).val()+',';
+                });
+                $("#teachers").val(teacher)
+            });
+        });
+    </script>
+<script>
+    var search_modal = document.getElementById("search");
+    var openModalBtn2 = document.getElementById("openModalBtn2");
+    var closeModalBtn2 = document.getElementById("closeModalBtn2");
+    var form2 = document.getElementById("myForm2");
+
+    // Open the modal
+    openModalBtn2.addEventListener("click", function () {
+        search_modal.style.display = "block";
+    });
+
+    // Close the modal
+    closeModalBtn2.addEventListener("click", function () {
+        search_modal.style.display = "none";
+    });
+
+    // Close the modal when clicking outside the modal content
+    window.addEventListener("click", function (event) {
+        if (event.target == search_modal) {
+            search_modal.style.display = "none";
+        }
+    });
+    // ------------------------------------------------------------
+    var voice_modal = document.getElementById("voice");
+    var openModalBtn3 = document.getElementById("openModalBtn3");
+    var closeModalBtn3 = document.getElementById("closeModalBtn3");
+
+    // Open the modal
+    openModalBtn3.addEventListener("click", function () {
+        voice_modal.style.display = "block";
+    });
+
+    // Close the modal
+    closeModalBtn3.addEventListener("click", function () {
+        voice_modal.style.display = "none";
+    });
+
+    // Close the modal when clicking outside the modal content
+    window.addEventListener("click", function (event) {
+        if (event.target == voice_modal) {
+            voice_modal.style.display = "none";
+        }
+    });
+</script>
+</body>
+</html>

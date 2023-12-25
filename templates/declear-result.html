@@ -1,0 +1,181 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Declear Result for {{result.student_name}}</title>
+    <!-- Font Awesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://fontawesome.com/icons/lips?f=classic&s=solid">
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    <!-- my css -->
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link rel="shortcut icon" href="{% static 'img/logo.png' %}" type="image/x-icon">
+    <style>
+        .modal {
+            display: block; /* Hidden by default */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            transition: all 1s;
+        }
+        input[type=checkbox]{
+            accent-color: red;
+        }
+        img{
+            border-radius: 50%;
+            height: 200px;
+            width: 200px;
+        }
+        .subj{
+            border: 2px solid red;
+        }
+    </style>
+</head>
+<body>
+    <div class="up-header">
+        <div class="brand"><h2><i class="fa fa-graduation-cap"></i> SRMS | <i class="fa fa-user-tie"></i> User {{current_user.role}}</h2></div>
+        <div class="end-content"><a href="#"><i class="fa fa-power-off"></i> Logout</a></div>
+    </div>
+    <div class="container-fluid">
+        <nav class="nav-section desk">
+            <ul>
+                <li><a href="#"><i class="fa fa-gauge"></i> Dashboard</a></li>
+                {% if current_user.role == 'examiner' or current_user.role == 'admin' %}
+                <li><a href="#"><i class="fa fa-list"></i> Classes</a></li>
+                <li><a href="#"><i class="fa fa-user-circle"></i> Staff</a></li>
+                <li><a href="#"><i class="fa fa-file"></i> Subjects</a></li>
+                <li><a href="#"><i class="fa fa-users"></i> Students</a></li>
+                {% endif %}
+                <li class="active"><a href="#"><i class="fa-solid fa-square-poll-vertical"></i> Result</a></li>
+                <li class="ma"><a href="#"><i class="fa fa-gear"></i> Manage Account</a></li>
+            </ul>
+        </nav>
+        <nav class="nav-section res">
+            <ul>
+                <li><a href="#"><i class="fa fa-gauge"></i> <span>Dashboard</span></a></li>
+                {% if current_user.role == 'examiner' or current_user.role == 'admin' %}
+                <li><a href="#"><i class="fa fa-list"></i> <span>Classes</span></a></li>
+                <li><a href="#"><i class="fa fa-user-circle"></i> <span>Staff</span></a></li>
+                <li><a href="#"><i class="fa fa-file"></i> <span>Subjects</span></a></li>
+                <li><a href="#"><i class="fa fa-users"></i> <span>Students</span></a></li>
+                {% endif %}
+                <li><a href="#"><i class="fa-solid fa-square-poll-vertical"></i> <span>Result</span></a></li>
+                <li class="ma"><a href="#"><i class="fa fa-gear"></i> <span>Manage Account</span></a></li>
+            </ul>
+        </nav>
+        <main class="main-section">
+            <div id="myModal" class="modal">
+                <div class="modal-content">
+                    <a href="/result" class="close" id="closeModalBtn">&times;</a>
+                    <h2>Declear Result for {{result.student_name}}</h2>
+                    <p><i>Declear Result.</i></p>
+                    {% for message in messages %}
+                    {% if message.tags == 'error'%}
+                    <div class="alert alert-danger">{{message}}</div>
+                    {% elif message.tags == 'success'%}
+                    <div class="alert alert-success">{{message}}</div>
+                    {% endif %}
+                    {% endfor %}
+                    <form id="result" method="post" enctype="multipart/form-data" action="/declear-result/{{result.id}}">
+                        {% csrf_token %}
+                        <div class="row">
+                            <span><b>Student Name</b></span>
+                            <input name="student_name" id="student_name" value="{{result.stu_id.stu_fullname}}" placeholder="Student Name" readonly>
+                        </div>
+                        <div class="row">
+                            <span class="text-danger">*</span>
+                            <span><b>Add Comment</b></span>
+                            <textarea name="comment" id="comment" cols="30" rows="10"></textarea>
+                        </div>
+                        <div class="row">
+                            <span><b>Upload your Signature</b></span>
+                            <input type="file" name="sign" id="sign">
+                        </div>
+                        <button type="submit"><i class="fa fa-check"></i> Declear</button>
+                    </form>
+                </div>
+            </div>
+            <div class="icons">
+                <a href="#" id="openModalBtn2">
+                    <i class="fa fa-search"></i>
+                </a> <br>
+                <a href="#" id="openModalBtn3">
+                    <i class="fa fa-microphone"></i>
+                </a><br>
+                <span>Powered By - <i><b>BIN AHMAD ALAMIN</b></i></span>
+            </div>
+        </main>
+    </div>
+    <script src="{% static 'JQ.js' %}"></script>
+    <script>
+        $(document).ready(function(){
+            $(".chck").click(function (){
+                var subj = "";
+                $(".chck:checked").each(function(){
+                    subj+=$(this).val()+',';
+                });
+                $("#subj").val(subj)
+            });
+        });
+
+        $(document).ready(function(){
+            $(".chck2").click(function (){
+                var teacher = "";
+                $(".chck2:checked").each(function(){
+                    teacher+=$(this).val()+',';
+                });
+                $("#teachers").val(teacher)
+            });
+        });
+    </script>
+    <script>
+        var search_modal = document.getElementById("search");
+        var openModalBtn2 = document.getElementById("openModalBtn2");
+        var closeModalBtn2 = document.getElementById("closeModalBtn2");
+        var form2 = document.getElementById("myForm2");
+    
+        // Open the modal
+        openModalBtn2.addEventListener("click", function () {
+            search_modal.style.display = "block";
+        });
+    
+        // Close the modal
+        closeModalBtn2.addEventListener("click", function () {
+            search_modal.style.display = "none";
+        });
+    
+        // Close the modal when clicking outside the modal content
+        window.addEventListener("click", function (event) {
+            if (event.target == search_modal) {
+                search_modal.style.display = "none";
+            }
+        });
+        // ------------------------------------------------------------
+        var voice_modal = document.getElementById("voice");
+        var openModalBtn3 = document.getElementById("openModalBtn3");
+        var closeModalBtn3 = document.getElementById("closeModalBtn3");
+    
+        // Open the modal
+        openModalBtn3.addEventListener("click", function () {
+            voice_modal.style.display = "block";
+        });
+    
+        // Close the modal
+        closeModalBtn3.addEventListener("click", function () {
+            voice_modal.style.display = "none";
+        });
+    
+        // Close the modal when clicking outside the modal content
+        window.addEventListener("click", function (event) {
+            if (event.target == voice_modal) {
+                voice_modal.style.display = "none";
+            }
+        });
+    </script>
+</body>
+</html>

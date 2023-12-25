@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../static/style.css">
+    <link rel="shortcut icon" href="../static/img/logo.png" type="image/x-icon">
+    <style>
+        .modal-content{
+            margin-top: 150px;
+        }
+    </style>
+</head>
+<body>
+    <div class="form">
+        <div class="modal-content">
+            <h2><i class="fa fa-lock"></i> Login</h2>
+            <h2 class="text-center mt-5 text-responsive text-light bg-secondary">Welcome Back to <i>STUDENT RESULT MANAGEMENT SYSTEM</i></h2>
+            <form id="login">
+                {% csrf_token %}
+                <div class="row">
+                    <input type="text" id="username" name="username" placeholder="Username">
+                </div>
+                <div class="row">
+                    <input type="password" id="password" name="password" placeholder="Password">
+                </div>
+                <button type="submit">Login</button><br>
+                <div class="text-left">
+                    <a href="/" class="btn btn-danger"><i class="fa fa-arrow-left"></i></a>
+                </div>
+            </form>
+        </div>
+        <div class="row text-center mt-5">
+            <span>Powered By - <i><b>BIN AHMAD ALAMIN</b></i></span>
+        </div>
+    </div>
+    <script src="../static/JQ.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+    <script>
+        // ajax
+        $(document).on('submit', '#login', function (e){
+            e.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: '/login/',
+                data: {
+                    username: $('#username').val(),
+                    password: $('#password').val(),
+                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+                },
+                success: function (response){
+                    var success = response['success'];
+                    if(success){
+                        // NORMAL ALERT warning, error, success 
+                        swal ( "Successful" ,  response['message'] ,  "success" );
+                        window.location.href = '/dashboard/';
+                    }else{
+                        swal ( "Oops" ,  response['message'] ,  "error" )
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

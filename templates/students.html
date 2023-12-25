@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Students</title>
+    <!-- Font Awesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://fontawesome.com/icons/lips?f=classic&s=solid">
+    <link rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.jqueryui.min.css">
+    <!-- my css -->
+    <link rel="stylesheet" href="../static/style.css">
+    <link rel="shortcut icon" href="../static/img/logo.png" type="image/x-icon">
+    <style>
+        .res a{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        @media screen and (max-width: 375px) {
+            .res{
+                height: 150vh;
+            }
+            .icons{
+                position: absolute;
+                right: -350px;
+                bottom: -400px;
+                line-height: 30px;
+            }
+            .up-header{
+                font-size: 20px;
+                width: 200vw;
+            }
+            .main-section{
+                background: linear-gradient(rgb(216, 216, 216), rgba(249, 249, 249, 0.484), rgba(255, 255, 255, 0.198));
+                height: 50vh;
+                width: 200vw;
+            }
+            #myModal, form input{
+                font-size: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="up-header">
+        <div class="brand"><h2><i class="fa fa-graduation-cap"></i> SRMS | <i class="fa fa-user-tie"></i> User {{current_user.role}}</h2></div>
+        <div class="end-content"><a href="/logout"><i class="fa fa-power-off"></i> Logout</a></div>
+    </div>
+    <div class="container-fluid">
+        <nav class="nav-section desk">
+            <ul>
+                <li><a href="/dashboard"><i class="fa fa-gauge"></i> Dashboard</a></li>
+                {% if current_user.role == 'examiner' or current_user.role == 'admin' %}
+                <li><a href="/student_class"><i class="fa fa-list"></i> Classes</a></li>
+                <li><a href="/staff"><i class="fa fa-user-circle"></i> Staff</a></li>
+                <li><a href="/subject"><i class="fa fa-file"></i> Subjects</a></li>
+                <li class="active"><a href="/student"><i class="fa fa-users"></i> Students</a></li>
+                {% endif %}
+                <li><a href="/result"><i class="fa-solid fa-square-poll-vertical"></i> Result</a></li>
+                <li class="ma"><a href="/manage-acc"><i class="fa fa-gear"></i> Manage Account</a></li>
+
+            </ul>
+        </nav>
+        <nav class="nav-section res">
+            <ul>
+                <li><a href="/dashboard"><i class="fa fa-gauge"></i> <span>Dashboard</span></a></li><br>
+                {% if current_user.role == 'examiner' or current_user.role == 'admin' %}
+                <li><a href="/student_class"><i class="fa fa-list"></i> <span>Classes</span></a></li><br><br>
+                <li><a href="/staff"><i class="fa fa-user-circle"></i> <span>Staff</span></a></li><br><br>
+                <li><a href="/subject"><i class="fa fa-file"></i> <span>Subjects</span></a></li><br>
+                <li><a href="/student"><i class="fa fa-users"></i> <span>Students</span></a></li><br>
+                {% endif %}
+                <li><a href="/result"><i class="fa-solid fa-square-poll-vertical"></i> <span>Result</span></a></li><br>
+                <li class="ma"><a href="/manage-acc"><i class="fa fa-gear"></i> <span>Manage Account</span></a></li>
+            </ul>
+        </nav>
+        <main class="main-section">
+            <div class="container">
+                <h1>Students  <a href="#" id="openModalBtn"><i class="fa fa-plus-circle"></i></a></h1>
+                {% for message in messages %}
+                {% if message.tags == 'error'%}
+                <div class="alert alert-danger">{{message}}</div>
+                {% elif message.tags == 'success'%}
+                <div class="alert alert-success">{{message}}</div>
+                {% endif %}
+                {% endfor %}
+                <table id="myTable" class="table table-striped" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Student ID</th>
+                            <th>Student Name</th>
+                            <th>Student Class</th>
+                            <th>Gender</th>
+                            <th>Date of Birth</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for student in students %}
+                        <tr>
+                            <td>{{student.stu_id}}</td>
+                            <td>{{student.f_name}} {{student.l_name}} {{student.m_name}}</th>
+                            <td>{{student.class_name}}</td>
+                            <td>{{student.gender}}</td>
+                            <td>{{student.dob}}</td>
+                            <td>
+                                <a href="/get-student/{{student.id}}" class="btn btn-primary"><i class="fa fa-pencil text-light"></i></a>
+                                <a href="/full-details-student/{{student.id}}" class="btn btn-info"><i class="fa fa-list text-light"></i></a>
+                                <button class="btn btn-danger delete-btn" data-student-id="{{student.id}}"><i class="fa fa-trash"></i></button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Student ID</th>
+                            <th>Student Name</th>
+                            <th>Student Class</th>
+                            <th>Gender</th>
+                            <th>Date of Birth</th>
+                            <th>Actions</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <div class="icons">
+                <!-- <a href="#" id="openModalBtn2">
+                    <i class="fa fa-search"></i>
+                </a> <br>
+                <a href="#" id="openModalBtn3">
+                    <i class="fa fa-microphone"></i>
+                </a><br> -->
+                <span>Powered By - <i><b>BIN AHMAD ALAMIN</b></i></span>
+            </div>
+        </main>
+    </div>
+
+    <!-- Subject Modal -->
+    <div id="myModal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="close" id="closeModalBtn">&times;</span>
+            <h2>Register Student</h2>
+            <p><i>Please add all the nessesary information for the Student.</i></p>
+            <form id="student">
+                {% csrf_token %}
+                <div class="row">
+                    <span class="text-danger">*</span>
+                    <span><b>First Name</b></span>
+                    <input type="text" id="fname" name="fname" placeholder="First Name" required>
+                </div>
+                <div class="row">
+                    <span><b>Middle Name</b></span>
+                    <input type="text" id="mname" name="mname" placeholder="Middle Name (Optional)">
+                </div>
+                <div class="row">
+                    <span class="text-danger">*</span>
+                    <span><b>Last Name</b></span>
+                    <input type="text" id="lname" name="lname" placeholder="Last Name" required>
+                </div>
+                <div class="row">
+                    <span class="text-danger">*</span>
+                    <span><b>Date of Birth</b></span>
+                    <input type="date" id="dob" name="dob" placeholder="Date of Birth" required>
+                </div>
+                <div class="row">
+                    <span class="text-danger">*</span>
+                    <span><b>Gender</b></span>
+                    <select name="gender" id="gender" required>
+                        <option value="">---Select Gender---</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                </div>
+                <div class="row">
+                    <span class="text-danger">*</span>
+                    <span><b>Address</b></span>
+                    <textarea name="stu_address" id="stu_address" cols="30" rows="5" placeholder="Contact Address" required></textarea>
+                </div>
+                <div class="row">
+                    <span class="text-danger">*</span>
+                    <span><b>Select Class</b></span>
+                    <select name="student_class" id="student_class" required>
+                        <option value="">---Select Class---</option>
+                        {% for class in classes %}
+                        <option value="{{class.class_name}}">{{class.class_name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="row">
+                    <span class="text-danger">*</span>
+                    <span><b>Term</b></span>
+                    <select name="term" id="term" required>
+                        <option value="" class="after">---Term---</option>
+                    </select>
+                </div>
+                <h2>Parent/Gaurdian</h2>
+                <p><i>Please add all the nessesary information for the Parent/Gaurdian.</i></p>
+                <div class="row">
+                    <span class="text-danger">*</span>
+                    <span><b>Full Name</b></span>
+                    <input type="text" id="full_name" name="full_name" placeholder="Full Name" required>
+                </div>
+                <div class="row">
+                    <span class="text-danger">*</span>
+                    <span><b>Phone Number</b></span>
+                    <input type="number" id="p_number" name="p_number" placeholder="Phone Number" required>
+                </div>
+                <div class="row">
+                    <span class="text-danger">*</span>
+                    <span><b>Parent/Gaurdian Address</b></span>
+                    <textarea name="g_address" id="g_address" cols="30" rows="5" placeholder="Contact Address" required></textarea>
+                </div>
+                <div class="row">
+                    <span class="text-danger">*</span>
+                    <span><b>Relationship</b></span>
+                    <select name="relationship" id="relationship" required>
+                        <option value="">---Relationship---</option>
+                        <option value="Parent">Parent</option>
+                        <option value="Gaurdian">Gaurdian</option>
+                    </select>
+                </div>
+                <div class="row">
+                    <span class="text-danger">*</span>
+                    <span><b>Parent/Gaurdian Email Address</b></span>
+                    <input type="email" id="email" name="email" placeholder="Email" required>
+                </div>
+                <button type="submit">Register</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Search Modal -->
+    <div id="search" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="close" id="closeModalBtn2">&times;</span>
+            <h2>Search</h2>
+            <p><i>Search any data by selecting the category.</i></p>
+            <form id="myForm2">
+                <div class="row">
+                    <select name="search" id="search" required>
+                        <option value="">Select Category</option>
+                    </select>
+                </div>
+                <div class="row">
+                    <input type="text" id="search" name="search" placeholder="Item to be search.." required>
+                </div>
+                <button type="submit"><i class="fa fa-search"></i></button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Search Modal -->
+    <div id="voice" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="close" id="closeModalBtn3">&times;</span>
+            <h2>Voice Search</h2>
+            <p><i style="color: red;">The feature is not yet available..!!!</i></p>
+            <p><i style="text-align: center; color: silver;" class="fas fa-microphone"></i></p>
+        </div>
+    </div>
+    <script src="../static/scripts.js"></script>
+    <script src="../static/JQ.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.jqueryui.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            let table = new DataTable('#myTable', {
+                responsive: true,
+            });
+
+        });
+    </script>
+    <script>
+        $("#student select[name='student_class']").on('change', function(){
+            var $this = $(this);
+            var termSelect = $("#student select[name='term']");
+            if($this.val() !=''){
+                $.ajax({
+                    url: '/get_term/'+$this.val(),
+                    type: 'GET',
+                    success: function (resp) {
+                        termSelect.empty();  // Clear all existing options
+                        resp.data.forEach(term => {
+                            // Append new options
+                            termSelect.append($('<option>', {
+                                value: term.term,
+                                text: term.term
+                            }));
+                        });
+                    },
+                    error: function(resp){
+                        console.log('Something went wrong');
+                    }
+                });
+            }else{
+                termSelect.empty();
+            }
+        });
+    </script>
+
+<script>
+    // ajax
+    var modal = document.getElementById("myModal");
+    $(document).on('submit', '#student', function (e){
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: '/student/',
+            data: {
+                fname: $('#fname').val(),
+                mname: $('#mname').val(),
+                lname: $('#lname').val(),
+                dob: $('#dob').val(),
+                gender: $('#gender').val(),
+                stu_address: $('#stu_address').val(),
+                student_class: $('#student_class').val(),
+                term: $('#term').val(),
+                // Guardian
+                full_name: $('#full_name').val(),
+                p_number: $('#p_number').val(),
+                g_address: $('#g_address').val(),
+                relationship: $('#relationship').val(),
+                email: $('#email').val(),
+
+                csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+            },
+            success: function (response){
+                var success = response['success'];
+                if(success){
+                    // NORMAL ALERT warning, error, success 
+                    swal ( "Registration Successful.." ,  response['message'] ,  "success" )
+                    modal.style.display = "none";
+                    // window.location.reload();
+                }else{
+                    swal ( "Oops" ,  response['message'] ,  "error" )
+                }
+            }
+        })
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('.delete-btn').click(function () {
+            var studentId = $(this).data('student-id');
+            // var confirmation = confirm("Are you sure you want to delete this item?");
+                swal({
+                    title: "Are you sure you want to delete this student?",
+                    text: "Once deleted, you will not be able to recover this data!",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                if (willDelete){
+                    $.ajax({
+                        type: 'POST',
+                        url: '/deleteStudent/' + studentId + '/', // Replace with the URL for your delete view
+                        data: {
+                            csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+                        },
+                        success: function (response) {
+                            if (response.success) {
+                                // Deletion successful, perform any necessary UI updates
+                                swal("Deleted!", response.message, "success");
+                                // Refresh the page or remove the deleted item from the UI
+                            } 
+                            // window.location.reload();
+                        }
+                    });
+                }
+            });
+        });
+    });
+
+</script>
+</body>
+</html>

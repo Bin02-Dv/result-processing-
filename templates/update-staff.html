@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Staff</title>
+    <!-- Font Awesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://fontawesome.com/icons/lips?f=classic&s=solid">
+    <link rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css">
+    <!-- my css -->
+    <link rel="stylesheet" href="../static/style.css">
+    <link rel="shortcut icon" href="../static/img/logo.png" type="image/x-icon">
+    <style>
+        .modal {
+            display: block; /* Hidden by default */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            transition: all 1s;
+        }
+        input[type=checkbox]{
+            accent-color: red;
+        }
+        img{
+            border-radius: 50%;
+            height: 200px;
+            width: 200px;
+        }
+        .subj{
+            border: 2px solid red;
+        }
+    </style>
+</head>
+<body>
+    <div class="up-header">
+        <div class="brand"><h2><i class="fa fa-graduation-cap"></i> SRMS | <i class="fa fa-user-tie"></i> User {{current_user.role}}</h2></div>
+        <div class="end-content"><a href="#"><i class="fa fa-power-off"></i> Logout</a></div>
+    </div>
+    <div class="container-fluid">
+        <nav class="nav-section desk">
+            <ul>
+                <li><a href="#"><i class="fa fa-gauge"></i> Dashboard</a></li>
+                <li><a href="#"><i class="fa fa-list"></i> Classes</a></li>
+                <li class="active"><a href="#"><i class="fa fa-user-circle"></i> Staff</a></li>
+                <li><a href="#"><i class="fa fa-file"></i> Subjects</a></li>
+                <li><a href="#"><i class="fa fa-users"></i> Students</a></li>
+                <li><a href="#"><i class="fa-solid fa-square-poll-vertical"></i> Result</a></li>
+                <li class="ma"><a href="#"><i class="fa fa-gear"></i> Manage Account</a></li>
+
+            </ul>
+        </nav>
+        <nav class="nav-section res">
+            <ul>
+                <li><a href="#"><i class="fa fa-gauge"></i> <span>Dashboard</span></a></li>
+                <li><a href="#"><i class="fa fa-list"></i> <span>Classes</span></a></li>
+                <li><a href="#"><i class="fa fa-user-circle"></i> <span>Staff</span></a></li>
+                <li><a href="#"><i class="fa fa-file"></i> <span>Subjects</span></a></li>
+                <li><a href="#"><i class="fa fa-users"></i> <span>Students</span></a></li>
+                <li><a href="#"><i class="fa-solid fa-square-poll-vertical"></i> <span>Result</span></a></li>
+                <li class="ma"><a href="#"><i class="fa fa-gear"></i> <span>Manage Account</span></a></li>
+            </ul>
+        </nav>
+        <main class="main-section">
+            <div id="myModal" class="modal">
+                <div class="modal-content">
+                    <a href="/staff" class="close" id="closeModalBtn">&times;</a>
+                    <h2><i class="fa fa-cog"></i> Staff Profile Settings</h2>
+                    <p><i>Update Staff</i></p>
+                    {% for message in messages %}
+                    {% if message.tags == 'error'%}
+                    <div class="alert alert-danger">{{message}}</div>
+                    {% elif message.tags == 'success'%}
+                    <div class="alert alert-success">{{message}}</div>
+                    {% endif %}
+                    {% endfor %}
+                    <img src="{{staff.staff_photo.url}}" alt="" height="100" weight="100">
+                    <form id="myForm" method="post" action="/update-staff/{{staff.id_user}}" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="row">
+                            <span class="text-warning"><i>Update The Staff Profile Image with the following format (JPG, PNG, JEPG)</i></span>
+                            <input type="file" id="profileimg" name="profileimg" placeholder="Profile Image">
+                        </div>
+                        <div class="row">
+                            <span><b>Staff ID</b></span>
+                            <input type="text" id="staff-id" name="staff-id" placeholder="Staff ID" value="{{staff.staff_id}}">
+                        </div>
+                        <div class="row">
+                            <span><b>First Name</b></span>
+                            <input type="text" id="fname" name="fname" placeholder="First Name" value="{{staff.f_name}}">
+                        </div>
+                        <div class="row">
+                            <span><b>Middle Name</b></span>
+                            <input type="text" id="mname" name="mname" placeholder="Middle Name (Optional)" value="{{staff.m_name}}">
+                        </div>
+                        <div class="row">
+                            <span><b>Last Name</b></span>
+                            <input type="text" id="lname" name="lname" placeholder="Last Name" value="{{staff.l_name}}">
+                        </div>
+                        <div class="row">
+                            <span><b>Date of Birth</b></span>
+                            <input type="text" id="dob" name="dob" placeholder="Date of Birth" value="{{staff.dob}}">
+                        </div>
+                        <div class="row">
+                            <span><b>Staff Phone Number</b></span>
+                            <input type="number" id="staff_phone" name="staff_phone" placeholder="Phone Number" value="{{staff.staff_phone}}">
+                        </div>
+                        <div class="row">
+                            <span><b>Staff Email</b></span>
+                            <input type="email" id="email" name="email" placeholder="Email" value="{{staff.user.email}}">
+                        </div>
+                        <div class="row">
+                            <span><b>Staff Username</b></span>
+                            <input type="text" id="username" name="username" placeholder="Username" value="{{staff.user.username}}">
+                        </div>
+                        <div class="row">
+                            <span><b>Change Password</b></span>
+                            <input type="password" id="password" name="password" placeholder="Change Password">
+                        </div>
+                        <div class="row">
+                            <span><b>Confirm Password</b></span>
+                            <input type="password" id="cpassword" name="cpassword" placeholder="Confirm Password">
+                        </div>
+                        <div class="row">
+                            <span><b>Staff Gender</b></span>
+                            <select name="gender" id="">
+                                <option value="{{staff.gender}}">{{staff.gender}}</option>
+                                <option value="">Select Gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+                        </div>
+                        <div class="row">
+                            <span><b>Staff Role</b></span>
+                            <select name="role" id="" required>
+                                <option value="{{staff.role}}">{{staff.role}}</option>
+                                <option value="">Select role</option>
+                                <option value="admin">admin</option>
+                                <option value="teacher">teacher</option>
+                            </select>
+                        </div>
+                        <h1>Select Subject/Subjects</h1>
+                        <div class="subj p-5">
+                            {% for subject in subjects %}
+                            <input type="checkbox" name="" id="" value="{{subject.subject_name}}" class="chck">
+                            <span>{{subject.subject_name}}</span> &nbsp;&nbsp;
+                            {% endfor %}
+                        </div>
+                        <div class="row">
+                            <span><b>Staff Subjects Taking</b></span>
+                            <textarea name="subj" id="subj" cols="30" rows="5" placeholder="Staff Subjects">{{staff.subjects}}</textarea>
+                        </div>
+                        <div class="row">
+                            <textarea name="address1" id="" cols="30" rows="5" placeholder="Contact Address">{{staff.staff_address}}</textarea>
+                        </div>
+                        <h2>Next of Kin</h2>
+                        <div class="row">
+                            <!-- <span class="text-danger">*</span> -->
+                            <span><b>Full Name</b></span>
+                            <input type="text" id="full_name" name="full_name" placeholder="Full Name" value="{{staff.n_fullname}}">
+                        </div>
+                        <div class="row">
+                            <!-- <span class="text-danger">*</span> -->
+                            <span><b>Phone Number</b></span>
+                            <input type="number" id="p_number" name="p_number" placeholder="Phone Number" value="{{staff.n_phone_number}}">
+                        </div>
+                        <div class="row">
+                            <!-- <span class="text-danger">*</span> -->
+                            <span><b>Contact Address</b></span>
+                            <textarea name="address2" id="" cols="30" rows="5" placeholder="Contact Address">{{staff.n_address}}</textarea>
+                        </div>
+                        <div class="row">
+                            <!-- <span class="text-danger">*</span> -->
+                            <span><b>Email Address</b></span>
+                            <input type="email" id="email2" name="email2" placeholder="Email" value="{{staff.n_email}}">
+                        </div>
+                        <button type="submit"><i class="fa fa-refresh"></i> Update</button>
+                    </form>
+                </div>
+            </div>
+            <div class="icons">
+                <a href="#" id="openModalBtn2">
+                    <i class="fa fa-search"></i>
+                </a> <br>
+                <a href="#" id="openModalBtn3">
+                    <i class="fa fa-microphone"></i>
+                </a><br>
+                <span>Powered By - <i><b>BIN AHMAD ALAMIN</b></i></span>
+            </div>
+        </main>
+    </div>
+    <script src="../static/JQ.js"></script>
+    <script>
+        $(document).ready(function(){
+            $(".chck").click(function (){
+                var subj = "";
+                $(".chck:checked").each(function(){
+                    subj+=$(this).val()+', ';
+                });
+                $("#subj").val(subj)
+            });
+        });
+    </script>
+<script>
+    var search_modal = document.getElementById("search");
+    var openModalBtn2 = document.getElementById("openModalBtn2");
+    var closeModalBtn2 = document.getElementById("closeModalBtn2");
+    var form2 = document.getElementById("myForm2");
+
+    // Open the modal
+    openModalBtn2.addEventListener("click", function () {
+        search_modal.style.display = "block";
+    });
+
+    // Close the modal
+    closeModalBtn2.addEventListener("click", function () {
+        search_modal.style.display = "none";
+    });
+
+    // Close the modal when clicking outside the modal content
+    window.addEventListener("click", function (event) {
+        if (event.target == search_modal) {
+            search_modal.style.display = "none";
+        }
+    });
+    // ------------------------------------------------------------
+    var voice_modal = document.getElementById("voice");
+    var openModalBtn3 = document.getElementById("openModalBtn3");
+    var closeModalBtn3 = document.getElementById("closeModalBtn3");
+
+    // Open the modal
+    openModalBtn3.addEventListener("click", function () {
+        voice_modal.style.display = "block";
+    });
+
+    // Close the modal
+    closeModalBtn3.addEventListener("click", function () {
+        voice_modal.style.display = "none";
+    });
+
+    // Close the modal when clicking outside the modal content
+    window.addEventListener("click", function (event) {
+        if (event.target == voice_modal) {
+            voice_modal.style.display = "none";
+        }
+    });
+</script>
+</body>
+</html>
